@@ -55,7 +55,7 @@ public class Algorithm {
      * @param high - high index of the array that to be searched
      * @return class IndexMaxVarInfo that contains both the max value and its index in the array
      */
-    public static IndexMaxVarInfo getMaxInfo(float s[], int low, int high){
+    public static IndexMaxVarInfo getMaxInfo(double s[], int low, int high){
         IndexMaxVarInfo indexMaxVarInfo = new IndexMaxVarInfo();
         indexMaxVarInfo.index = low;
         indexMaxVarInfo.maxVar = s[low];
@@ -91,7 +91,7 @@ public class Algorithm {
     public static float meanValue(float[] s, int low, int high){
         float sum = 0;
         for(int i = low ; i < high ; i++){
-            sum += s[(i+s.length)%s.length];
+            sum += s[i];
         }
         sum /= (high - low + 1);
         return sum;
@@ -100,7 +100,7 @@ public class Algorithm {
     public static double meanValue(double[] s, int low, int high){
         double sum = 0;
         for(int i = low ; i < high ; i++){
-            sum += s[(i+s.length)%s.length];
+            sum += s[i];
         }
         sum /= (high - low + 1);
         return sum;

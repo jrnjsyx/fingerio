@@ -83,11 +83,9 @@ public class SignalGenerator  {
 
 
 
-    public static short[] fingerioSymbolGenerator(int length, int floorF, int ceilF){
+    public static short[] fingerioSymbolGenerator(int length, int floor, int ceil){
         short[] samples = new short[length];
         double[] sig = new double[length];
-        int floor = (int)(1.0*floorF*length/FlagVar.Fs);
-        int ceil = (int)(1.0*ceilF*length/FlagVar.Fs)+1;
 
         for(int i=0;i<sig.length;i++){
             if(i >= floor && i <= ceil){
@@ -112,14 +110,14 @@ public class SignalGenerator  {
         return samples;
     }
 
-    public static short[] soundSigGenerator(short[] sig, int size, int oneLoopTimes){
+    public static short[] soundSigGenerator(short[] sig, int size, int oneLoopLen){
         short[] samples = new short[size];
-        if(size%(sig.length*oneLoopTimes) != 0){
+        if(size%oneLoopLen != 0){
             throw new RuntimeException("size should be several times of the sig length");
         }
         for(int i=0;i<size;i++){
-            if(i%(sig.length*oneLoopTimes)<sig.length){
-                samples[i] = sig[i%(sig.length*oneLoopTimes)];
+            if(i%oneLoopLen<sig.length){
+                samples[i] = sig[i%oneLoopLen];
             }
         }
         return samples;

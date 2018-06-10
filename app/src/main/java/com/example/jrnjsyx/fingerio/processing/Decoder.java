@@ -12,13 +12,13 @@ public class Decoder {
 
     protected static int processBufferSize = -1;
 
-    public static short[] fingerioSymbol = SignalGenerator.fingerioSymbolGenerator(FlagVar.fingerioSymbolLen,FlagVar.floorF,FlagVar.ceilF);
+    public static short[] fingerioSymbol = SignalGenerator.fingerioSymbolGenerator(FlagVar.fingerioSymbolLen,FlagVar.floor,FlagVar.ceil);
 
     public static short[] soundSig;
 
     public static void setProcessBufferSize(int size){
         processBufferSize = size;
-        soundSig = SignalGenerator.soundSigGenerator(fingerioSymbol,size,FlagVar.oneLoopTimes);
+        soundSig = SignalGenerator.soundSigGenerator(fingerioSymbol,size,FlagVar.oneLoopLen);
     }
 
 
@@ -70,7 +70,7 @@ public class Decoder {
         int index = getMaxPosFromCorrdouble(corr);
         indexMaxVarInfo.index = index;
         indexMaxVarInfo.maxVar = corr[(index+corr.length)%corr.length];
-
+        indexMaxVarInfo.corr = corr;
         IndexMaxVarInfo resultInfo = preambleDetection(corr,indexMaxVarInfo);
         return resultInfo;
     }
@@ -114,14 +114,13 @@ public class Decoder {
             }
         }
         int start = end-400>0?end-400:0;
-        end = end-15>0?end-10:0;
         for(int i=start;i<=end;i++){
             if(corr[i] >= 0.9*max){
                 index = i;
                 break;
             }
         }
-        return index;
+        return end;
     }
 
     public double[] getFitPosFromCorrDouble(double [] corr, int halfBlockLength){
@@ -152,12 +151,7 @@ public class Decoder {
     public IndexMaxVarInfo preambleDetection(double[] corr, IndexMaxVarInfo indexMaxVarInfo){
         indexMaxVarInfo.isReferenceSignalExist = false;
         if(indexMaxVarInfo.maxVar > FlagVar.preambleDetectionThreshold) {
-            // use the ratio of peak value to the mean value of its previous 200 samples
-            int startIndex = indexMaxVarInfo.index - FlagVar.numberOfPreviousSamples;
-            double ratio = indexMaxVarInfo.maxVar / Algorithm.meanValue(corr, startIndex, indexMaxVarInfo.index);
-            if(ratio > FlagVar.ratioThreshold) {
-                indexMaxVarInfo.isReferenceSignalExist = true;
-            }
+            indexMaxVarInfo.isReferenceSignalExist = true;
         }
 //        System.out.println("index:"+indexMaxVarInfo.index+"   maxCorr:"+indexMaxVarInfo.maxVar);
         return indexMaxVarInfo;

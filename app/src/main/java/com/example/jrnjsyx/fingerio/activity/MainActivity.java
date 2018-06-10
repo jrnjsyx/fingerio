@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements AudioRecorder.Rec
     private Button omitButton;
     private Button recvButton;
     private TextView roughTextView;
+    private TextView preciseTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements AudioRecorder.Rec
         omitButton = (Button)findViewById(R.id.omit_sound);
         recvButton = (Button)findViewById(R.id.recv_sound);
         roughTextView = (TextView) findViewById(R.id.rough_distance);
+        preciseTextView = (TextView) findViewById(R.id.precise_distance);
         audioRecorder = new AudioRecorder();
         audioRecorder.recordingCallback(this);
         decodThread = new DecodThread(myHandler);
@@ -94,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements AudioRecorder.Rec
                     StringBuilder sb = new StringBuilder();
                     sb.append("rough distance:"+msg.arg1);
                     roughTextView.setText(sb.toString());
+                    break;
+                }
+                case FlagVar.MESSAGE_PRECISE_ESTIMATE:{
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("precise distance:"+msg.arg1);
+                    preciseTextView.setText(sb.toString());
                     break;
                 }
 

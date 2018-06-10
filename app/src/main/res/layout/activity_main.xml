@@ -25,4 +25,11 @@
         android:id="@+id/rough_distance"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/precise_distance"
+        />
+
 </LinearLayout>
